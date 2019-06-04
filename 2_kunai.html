@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>
+		2 kūnai
+	</title>
+	<style>
+		table {
+			Border-collapse:collapse;
+			}
+			th, td {
+				Border:1px solid black;
+				padding:4px 6px 4px 6px;
+				}
+				th{
+					Background-color:green;
+				}
+	</style>
+	<script>
+		function skaiciavimas() {
+			
+			
+															//alert('Hi');
+			var G = 6.67e-11;								
+															/*--- Duomenų įvedimas ---*/
+			var m1=parseFloat(document.getElementById("m1").value);
+			var m2=parseFloat(document.getElementById("m2").value);
+			var r_prad=parseFloat(document.getElementById("r_prad").value);
+			var r_gal=parseFloat(document.getElementById("r_gal").value);
+			
+			var rez_str = 'Įvesti duomenys:<br>';
+			
+			rez_str += 'kūno masės m1 = ' + m1 + 'm2= ' + m2 + '<br>';
+			rez_str += 'atstumas nuo r ' + r_prad + 'm2= ' + r_gal + '<br>';
+			
+			rez_str += '<table>';
+			rez_str += '<tr><th rowspan="2">atstumas</th><th colspan="2">traukos</th></tr>'
+			rez_str += '<tr><th>jėga</th><th>pokytis</th>';
+ 			
+			var rx = (r_gal - r_prad) /99;							//atstumo keitimo žingsnis
+			
+			var r = r_prad;
+			
+			var Fprad = G * ( m1 * m2 ) / ( r * r );
+			
+			var pokytis_min = 1;
+			var pokytis_max = 1;
+			var pokytis;
+			
+			for (var i = 0;  i<100; i++ ) {
+			
+				var F = G * ( m1 * m2 ) / ( r * r );
+				pokytis = (F / Fprad);
+				
+				rez_str += '<tr><td>' + r + '</td><td>' + F +  '</td><td>' + (F/Fprad) + '</td><td>' + pokytis  '</td></tr>';
+				r += rx;
+			}
+			
+			rez_str += '</table>';
+			
+			rez_str += 'pokyčio ribos nuo' + pokytis_min + 'iki' + pokytis_max + <'br'>;
+			
+			rez = document.getElementById("rez");
+			rez.innerHTML=rez_str;
+			
+			if (pokytis > pokytis_max) {
+				pokytis_max = pokytis;
+			}
+			if (pokytis < pokytis_min) {
+				pokytis_min = pokytis;
+			}
+		}
+	</script>
+</head>
+<body>
+	Traukos jėgos F tarp dviejų kūnų m1 ir m2 kitimo priklausomybė nuo atstumo r, intervale (r_prad ir r_gal) pagal formulę: <br>
+	<br>
+	F = G * (m1*m2)/r<sup>2</sup><br>
+	<br>
+	pirmo kūno masė(m1):<br>
+	<input type="text" id="m1" value="10"><br>
+	antro kūno masė(m1):<br>
+	<input type="text" id="m2" value="10"><br>
+	pradinis atstumas(r_prad):<br>
+	<input type="text" id="r_prad" value="10"><br>
+	galutinis atstumas(r_gal):<br>
+	<input type="text" id="r_gal" value="10"><br>
+	<input type="button" onClick="skaiciavimas()" value="skaiciuoti">
+	<div id="rez">
+	</div>
+	
+	
+</body>
+</html>
